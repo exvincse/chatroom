@@ -129,19 +129,20 @@ export default {
       const storageRef = this.$firebase.storage().ref();
       const file = this.$refs.file.files[0];
       if (file === undefined) return false;
-
       const len = imgtype.filter((item) => {
         return item.includes(file.type);
       });
-
       if (len.length === 0) {
         this.imgerror = true;
         return false;
       }
       this.imgerror = false;
+
       const uploadTask = storageRef.child(`images/${file.name}`).put(file);
       uploadTask.on('state_changed', (snapshot) => {
         this.progress = Math.ceil((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+      }, () => {
+
       }, () => {
         uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
           this.file = downloadURL;
