@@ -29,8 +29,7 @@ export default {
     };
   },
   created() {
-    const name = document.cookie.split(';')[1];
-    if (name.split('"')[1] !== '' && name.split('"')[1] !== 'clear') {
+    if (this.$cookie.get('name') !== undefined && this.$cookie.get('name') !== 'clear') {
       this.$router.push('/index');
     }
   },
@@ -46,7 +45,7 @@ export default {
         name,
         namekey,
       };
-      document.cookie = `name=${JSON.stringify(obj)}`;
+      this.$cookie.set('name', obj);
       this.$router.push('/index');
       return true;
     },
