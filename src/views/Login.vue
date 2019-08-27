@@ -29,7 +29,7 @@ export default {
     };
   },
   created() {
-    if (this.$store.state.coustomname !== '') {
+    if (this.$store.state.coustomname !== '' && this.$store.state.coustomname !== 'clear') {
       this.$router.push('/index');
     }
   },
@@ -41,6 +41,11 @@ export default {
       if (this.name === '') return false;
       const name = this.name;
       const namekey = Math.random().toString(36).split('.')[1];
+      const obj = {
+        name,
+        namekey,
+      };
+      document.cookie = `name=${JSON.stringify(obj)}`;
       this.$store.dispatch('start', { name, namekey });
       this.$router.push('/index');
       return true;

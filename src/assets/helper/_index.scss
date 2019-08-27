@@ -27,6 +27,16 @@ body {
 
 .top-nav{
     box-shadow: 0 2px 9px 0 rgba(140,81,81,0.34);
+    .login-layout{
+      &:hover{
+        .login-out{
+          display: block;
+        }
+        .name{
+          display: none;
+        }
+      }
+    }
     .menu{
         list-style: none;
         li{
@@ -58,13 +68,24 @@ body {
         }
     }
     .name{
+        min-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         font-size: 0.75rem;
         letter-spacing: 1.25px;
         height:57px;
         line-height: 1.5rem;
     }
+    .login-out{
+      display: none;
+      min-width: 120px;
+      font-size: 0.75rem;
+      letter-spacing: 1.25px;
+      height:57px;
+      line-height: 1.5rem;
+    }
 }
-
 .today-topic{
   >h2{
     font-size: 1.1125rem;
