@@ -78,11 +78,10 @@ export default {
     };
   },
   created() {
-    const name = document.cookie.split(';')[1];
-    if (name === undefined || name.split('"')[1] === 'clear') {
+    if (this.$cookie.get('name') === undefined || this.$cookie.get('name') === 'clear') {
       this.$router.push('/');
     } else {
-      this.cookie = JSON.parse(name.split('=')[1]);
+      this.cookie = JSON.parse(this.$cookie.get('name'));
     }
   },
   mounted() {
@@ -152,10 +151,7 @@ export default {
       });
     },
     loginout() {
-      const clear = 'clear';
-      document.cookie = `name=${JSON.stringify(clear)}`;
-      const name = document.cookie.split(';')[1];
-      this.$store.dispatch('start', JSON.parse(name.split('=')[1]));
+      this.$cookie.set('name', 'clear');
       this.$router.push('/');
     },
   },

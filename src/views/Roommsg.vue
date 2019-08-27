@@ -114,12 +114,12 @@ export default {
     };
   },
   created() {
-    const name = document.cookie.split(';')[1];
-    if (name === undefined || name.split('"')[1] === 'clear') {
+    if (this.$cookie.get('name') === undefined || this.$cookie.get('name') === 'clear') {
       this.$router.push('/');
       return false;
     }
-    this.cookie = JSON.parse(name.split('=')[1]);
+    this.cookie = JSON.parse(this.$cookie.get('name'));
+
     if (this.$route.query.room === '' || this.$route.query.roomid === '') this.$router.push('/index');
     this.inputmsg = '';
     this.file = '';
@@ -212,7 +212,7 @@ export default {
       return true;
     },
     loginout() {
-      document.cookie = `name=${JSON.stringify(null)}`;
+      this.$cookie.set('name', 'clear');
       this.$router.push('/');
     },
   },
