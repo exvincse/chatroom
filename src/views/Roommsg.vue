@@ -1,12 +1,16 @@
 <template>
   <div>
-    <nav class="top-nav d-flex bg-white align-items-center">
+    <nav class="top-nav d-flex bg-white align-items-center justify-content-between">
       <ul class="menu d-flex px-4 mb-0">
         <li>
           <router-link to="/index" class="py-3">首頁</router-link>
         </li>
       </ul>
-      <div class="p-3 ml-auto bg-navy-blue text-white name">{{starttalk.name}}</div>
+      <div class="login-layout">
+        <a href="#" class="p-3 btn btn-navy-blue login-out"
+          @click.prevent="loginout()">登出</a>
+        <a href="#" class="p-3 btn bg-navy-blue text-white name">{{cookie.name}}</a>
+      </div>
     </nav>
 
     <div class="top-banner p-3"
@@ -17,7 +21,7 @@
     <div ref="scroll-bottom"
         class="scroll-bottom d-flex flex-column px-3" style="height:400px;overflow-y:auto">
       <div v-for="(item, index) in totalmsg" :key="index">
-        <template v-if="item.customkey !== starttalk.namekey">
+        <template v-if="item.customkey !== cookie.namekey">
           <div class="room-layout float-left mb-2">
             <div>{{item.custom}}</div>
               <div v-if="item.img">
@@ -94,7 +98,6 @@
 
 <script>
 import $ from 'jquery';
-import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -102,6 +105,7 @@ export default {
       tophide: false,
       emoticonshow: false,
       emoticon: '',
+      cookie: {},
       progress: 0,
       totalmsg: [],
       imgerror: false,
@@ -110,14 +114,17 @@ export default {
     };
   },
   created() {
-    if (this.starttalk === '') this.$router.push('/');
+    const name = document.cookie.split(';')[1];
+    if (name === undefined || name.split('"')[1] === 'clear') {
+      this.$router.push('/');
+      return false;
+    }
+    this.cookie = JSON.parse(name.split('=')[1]);
     if (this.$route.query.room === '' || this.$route.query.roomid === '') this.$router.push('/index');
     this.inputmsg = '';
     this.file = '';
     this.updatemsg();
-  },
-  computed: {
-    ...mapGetters(['starttalk']),
+    return true;
   },
   updated() {
     const h = this.$refs['scroll-bottom'].scrollHeight;
@@ -192,8 +199,8 @@ export default {
       if (this.inputmsg === '' && this.file === '' && emoticon === '') return false;
       const timestamp = Math.floor(Date.now() / 100);
       this.$firebase.database().ref(`/${this.$route.query.room}/${this.$route.query.roomid}/msg`).push({
-        custom: this.starttalk.name,
-        customkey: this.starttalk.namekey,
+        custom: this.cookie.name,
+        customkey: this.cookie.namekey,
         timestamp,
         msg: this.inputmsg,
         emoticon,
@@ -203,6 +210,10 @@ export default {
       this.inputmsg = '';
       this.file = '';
       return true;
+    },
+    loginout() {
+      document.cookie = `name=${JSON.stringify(null)}`;
+      this.$router.push('/');
     },
   },
 };

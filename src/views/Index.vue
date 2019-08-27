@@ -1,12 +1,16 @@
 <template>
   <div class="wrap">
-    <nav class="top-nav d-flex bg-white align-items-center">
+    <nav class="top-nav d-flex bg-white align-items-center justify-content-between">
       <ul class="menu d-flex px-4 mb-0">
         <li>
           <router-link to="/index" class="py-3">首頁</router-link>
         </li>
       </ul>
-      <div class="p-3 ml-auto bg-navy-blue text-white name">{{starttalk.name}}</div>
+      <div class="login-layout">
+        <a href="#" class="p-3 btn btn-navy-blue login-out"
+          @click.prevent="loginout()">登出</a>
+        <a href="#" class="p-3 btn bg-navy-blue text-white name">{{cookie.name}}</a>
+      </div>
     </nav>
     <header class="top-bg py-5"></header>
     <section class="container" style="transform: translateY(-15%);">
@@ -63,23 +67,22 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
   data() {
     return {
       modal: false,
       Addroom: '',
+      cookie: {},
       todaytopic: {},
       uesrstory: [],
     };
   },
-  computed: {
-    ...mapGetters(['starttalk']),
-  },
   created() {
-    if (this.starttalk === '') {
+    const name = document.cookie.split(';')[1];
+    if (name === undefined || name.split('"')[1] === 'clear') {
       this.$router.push('/');
+    } else {
+      this.cookie = JSON.parse(name.split('=')[1]);
     }
   },
   mounted() {
@@ -92,7 +95,7 @@ export default {
       if (this.Addroom === '') return false;
       const timestamp = Math.floor(Date.now() / 100);
       this.$firebase.database().ref('/room/').push({
-        creatcustom: this.starttalk,
+        creatcustom: this.cookie,
         name: this.Addroom,
         timestamp,
       });
@@ -147,6 +150,13 @@ export default {
           roomname,
         },
       });
+    },
+    loginout() {
+      const clear = 'clear';
+      document.cookie = `name=${JSON.stringify(clear)}`;
+      const name = document.cookie.split(';')[1];
+      this.$store.dispatch('start', JSON.parse(name.split('=')[1]));
+      this.$router.push('/');
     },
   },
 };
