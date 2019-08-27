@@ -46,7 +46,6 @@ export default {
         namekey,
       };
       document.cookie = `name=${JSON.stringify(obj)}`;
-      this.$store.dispatch('start', { name, namekey });
       this.$router.push('/index');
       return true;
     },
