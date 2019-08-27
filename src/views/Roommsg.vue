@@ -143,6 +143,8 @@ export default {
       uploadTask.on('state_changed', (snapshot) => {
         this.progress = Math.ceil((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
       }, () => {
+
+      }, () => {
         uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
           this.file = downloadURL;
         }).then(() => {
