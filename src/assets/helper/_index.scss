@@ -1,0 +1,242 @@
+body {
+    max-width: 420px;
+}
+// login
+.custom-name{
+    width: 78%;
+    min-height: 343px;
+    transform: translateY(-14%);
+    background-color:$white;
+    border: 1px solid $navy-blue;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.18);
+    border-radius: 5px;
+    & > span{
+        font-size: 1.125rem;
+    }
+}
+.bottom-bg{
+    background: #FFF8CF;
+    border-radius: 5px;
+}
+
+//index
+.wrap{
+  position:relative;
+  max-height:calc(734px - 50px);
+}
+
+.top-nav{
+    box-shadow: 0 2px 9px 0 rgba(140,81,81,0.34);
+    .menu{
+        list-style: none;
+        li{
+            margin-right: 30px;
+        }
+        a{
+            font-size: 0.875rem;
+            text-decoration: none;
+            color: $black;
+            position: relative;
+            &::after{
+              content: '';
+              width: 0%;
+              position: absolute;
+              top: 100%;
+              left: 0;
+              height: 3px;
+              transition: 0.7s;
+              background-color: $navy-blue;
+            }
+            &:hover{
+              &::after{
+                width: 100%;
+              }
+            }
+        }
+        :last-child{
+            margin-right: 0px;
+        }
+    }
+    .name{
+        font-size: 0.75rem;
+        letter-spacing: 1.25px;
+        height:57px;
+        line-height: 1.5rem;
+    }
+}
+
+.today-topic{
+  >h2{
+    font-size: 1.1125rem;
+    border-left: 5px solid $primary;
+  }
+  .content{
+    :nth-child(1){
+      font-size: 1.1125rem;
+      letter-spacing: 1.88px;
+    }
+    :nth-child(2){
+      font-size: 0.75rem;
+      letter-spacing: 1.25px;
+    }
+  }
+}
+.hot-title{
+  font-size: 1.1125rem;
+  border-left: 5px solid $primary;
+}
+.hot{
+  position: relative;
+  overflow-y: auto;
+  max-height: 350px;
+  .addroom-btn{
+    position: fixed;
+    bottom: 10px;
+    right: 20px;
+    width: 62px;
+    height: 62px;
+    background: $white;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.44);
+    border-radius: 100%;
+    i{
+      line-height: 3.5rem;
+    }
+  }
+}
+.addroom{
+  position: absolute;
+  background: #fff;
+  border-radius: 5px;
+  width: 80%;
+  top: 50%;
+  left: 50%;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  .modal-hide{
+    position: absolute;
+    top: 10%;
+    left: 95%;
+    transform: translate(-50%,-50%);
+  }
+}
+.modal-bg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 300;
+  background-color: rgba(0,0,0,0.44);
+}
+.hot-topic{
+  position: relative;
+  word-break: break-all;
+  white-space: pre-line;
+  vertical-align: top;
+  min-width: 174px;
+  border: 1px solid $navy-blue;
+  border-radius: 5px;
+  padding: 2rem 0.8rem 0.8rem 0.8rem;
+  margin-bottom: 1rem;
+  &:nth-child(even){
+    margin-right: 1rem;
+  }
+  >a{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  >p{
+    font-size: 0.75rem;
+    letter-spacing: 1.25px;
+    line-height: 22px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+}
+.flex-content{
+  flex: 1 1 auto;
+}
+.flex-footer{
+  flex: 0 0 auto;
+}
+// roommsg
+.top-banner{
+  position: relative;
+  background-color: beige;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 55px;
+  >a{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+.top-hide{
+  word-break: break-all;
+  white-space: pre-line;
+  height: 85px;
+  >span{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+}
+.room-layout{
+  .msg{
+    word-break: break-all;
+    white-space: pre-line;
+    border: 1px solid $navy-blue;
+    border-radius: 0 10px 10px 10px;
+  }
+  .msg-r{
+    border-radius: 10px 0 10px 10px;
+  }
+}
+.upmsg{
+  position: relative;
+  .msg{
+    border-radius: 1rem;
+    border: 1px solid $navy-blue;
+  }
+}
+.progess{
+  width: 0px;
+  height: 7px;
+  border-radius: 10px;
+  background-color: $success;
+}
+.file{
+  cursor: pointer;
+}
+.emoticon-wrap{
+  position: relative;
+  .emoticon{
+    position: absolute;
+    background-color: $white;
+    border:1px solid $navy-blue;
+    border-radius: 10px;
+    bottom: 21px;
+    left: -45px;
+    &::after{
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 46px;
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-top: 10px solid $navy-blue;
+      border-right: 10px solid transparent;
+    }
+  }
+}
