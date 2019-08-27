@@ -29,7 +29,8 @@ export default {
     };
   },
   created() {
-    if (this.$store.state.coustomname !== '' && this.$store.state.coustomname !== 'clear') {
+    const name = document.cookie.split(';')[1];
+    if (name.split('"')[1] !== '' && name.split('"')[1] !== 'clear') {
       this.$router.push('/index');
     }
   },
