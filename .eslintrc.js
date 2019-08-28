@@ -29,7 +29,7 @@ module.exports = {
         }
     }],
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-    "arrow-body-style": ["error", "always"],
+    "arrow-body-style": ["error", "as-needed", { "requireReturnForObjectLiteral": true }],
     "prefer-destructuring": ["error", {"object": false, "array": false}]
   },
   parserOptions: {

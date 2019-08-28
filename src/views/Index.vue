@@ -1,15 +1,21 @@
 <template>
   <div class="wrap">
-    <nav class="top-nav d-flex bg-white align-items-center">
-      <ul class="menu d-flex px-4 mb-0">
-        <li>
-          <router-link to="/index" class="py-3">首頁</router-link>
-        </li>
-      </ul>
-      <div class="p-3 ml-auto bg-navy-blue text-white name">{{starttalk.name}}</div>
-    </nav>
-    <header class="top-bg py-5"></header>
-    <section class="container" style="transform: translateY(-15%);">
+    <div class="">
+      <nav class="top-nav d-flex bg-white align-items-center justify-content-between">
+        <ul class="menu d-flex px-4 mb-0">
+          <li>
+            <router-link to="/index" class="py-3">首頁</router-link>
+          </li>
+        </ul>
+        <div class="login-layout">
+          <a href="#" class="p-3 btn btn-navy-blue login-out"
+            @click.prevent="loginout()">登出</a>
+          <a href="#" class="p-3 btn bg-navy-blue text-white name">{{cookie.name}}</a>
+        </div>
+      </nav>
+      <header class="top-bg py-5"></header>
+    </div>
+    <section class="container h-100" style="margin-top:-70px;">
       <div class="row">
         <div class="col-12 mb-4">
           <div class="today-topic">
@@ -19,25 +25,31 @@
                 @click.prevent="updatemsg(todaytopic.id, todaytopic.name, 'today')">
                 <div class="content d-flex flex-column">
                 <span class="mb-3">#{{todaytopic.name}}</span>
-                  <span>{{todaytopic.num}}<i class="fas fa-comment-dots ml-2"></i></span>
+                  <div class="d-flex justify-content-center align-items-center">
+                    <span class="mr-2">{{todaytopic.num}}</span>
+                    <img src="../assets/img/comment.svg" width="15px" height="15px" alt="">
+                  </div>
                 </div>
               </a>
             </div>
           </div>
         </div>
-
-        <div class="col-12 d-flex flex-wrap hot">
-          <h2 class="col-12 hot-title">熱門偷偷說</h2>
-          <div class="col-5 d-flex flex-column hot-topic" v-for="item in uesrstory" :key="item.id">
-            <p class="mb-4 flex-content">{{item.name}}</p>
-            <div class="d-flex flex-footer justify-content-between align-items-center">
-              <span style="font-size:12px;">{{item.creatcustom}}</span>
-              <div>
-                <span class="mr-2">{{item.num}}</span>
-                <img src="../assets/img/comment.svg" width="15px" height="15px" alt="">
+        <div class="col-12 d-flex flex-wrap hot h-100">
+          <div class="row">
+            <div class="col-12 d-flex justify-content-between flex-wrap">
+              <h2 class="col-12 hot-title">熱門偷偷說</h2>
+              <div class="d-flex flex-column hot-topic" v-for="item in uesrstory" :key="item.id">
+                <p class="mb-4 flex-content">{{item.name}}</p>
+                <div class="d-flex flex-footer justify-content-between align-items-center">
+                  <span style="font-size:12px;">{{item.creatcustom}}</span>
+                  <div>
+                    <span class="mr-2">{{item.num}}</span>
+                    <img src="../assets/img/comment.svg" width="15px" height="15px" alt="">
+                  </div>
+                </div>
+                <a href="#" :title="item.name" @click.prevent="updatemsg(item.id, item.name)"></a>
               </div>
             </div>
-            <a href="#" :title="item.name" @click.prevent="updatemsg(item.id, item.name)"></a>
           </div>
           <a href="#" class="addroom-btn text-center"
             @click.prevent="modal = !modal">
@@ -53,9 +65,9 @@
           <i class="fas fa-times fa-lg"></i>
         </a>
       </div>
-      <div class="input-group">
-        <textarea cols="30" rows="10" style="resize:none" v-model="Addroom"></textarea>
-        <button class="btn btn-primary ml-auto mt-3" @click="addroom(),modal=false">新增</button>
+      <div class="input-group d-flex flex-column">
+        <textarea cols="30" rows="10" style="resize:none" v-model.trim="Addroom"></textarea>
+        <button class="btn btn-primary mt-3" @click="addroom(),modal=false">新增</button>
       </div>
     </div>
     <div :class="{'modal-bg':modal}"></div>
@@ -63,23 +75,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
   data() {
     return {
       modal: false,
       Addroom: '',
+      cookie: {},
       todaytopic: {},
       uesrstory: [],
     };
   },
-  computed: {
-    ...mapGetters(['starttalk']),
-  },
   created() {
-    if (this.starttalk === '') {
+    if (this.$cookie.get('name') === undefined || this.$cookie.get('name') === 'clear') {
       this.$router.push('/');
+    } else {
+      this.cookie = JSON.parse(this.$cookie.get('name'));
     }
   },
   mounted() {
@@ -89,10 +99,13 @@ export default {
   methods: {
     // 新增聊天室
     addroom() {
-      if (this.Addroom === '') return false;
+      if (this.Addroom === '') {
+        alert('請輸入名稱');
+        return false;
+      }
       const timestamp = Math.floor(Date.now() / 100);
       this.$firebase.database().ref('/room/').push({
-        creatcustom: this.starttalk,
+        creatcustom: this.cookie,
         name: this.Addroom,
         timestamp,
       });
@@ -147,6 +160,10 @@ export default {
           roomname,
         },
       });
+    },
+    loginout() {
+      this.$cookie.set('name', 'clear');
+      this.$router.push('/');
     },
   },
 };
