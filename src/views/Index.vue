@@ -126,6 +126,7 @@ export default {
           if (name[index].msg === undefined) {
             num = 0;
             custom = '';
+            //123
           } else {
             num = Object.keys(name[index].msg).length;
             custom = Object.values(name[index].msg)[num - 1].custom;
