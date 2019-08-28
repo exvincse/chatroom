@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import cookie from 'js-cookie/src/js.cookie';
 import App from './App.vue';
 import router from './router';
@@ -8,9 +8,6 @@ import 'bootstrap';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'firebase/auth';
 import 'firebase/database';
-// import 'firebase/firestore';
-// import 'firebase/functions';
-// import 'firebase/messaging';
 import 'firebase/storage';
 
 Vue.prototype.$cookie = cookie;

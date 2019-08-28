@@ -1,6 +1,4 @@
-body {
-    max-width: 420px;
-}
+
 // login
 .custom-name{
     width: 78%;
@@ -22,9 +20,13 @@ body {
 //index
 .wrap{
   position:relative;
-  max-height:calc(734px - 50px);
 }
-
+.top-wrap{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
 .top-nav{
     box-shadow: 0 2px 9px 0 rgba(140,81,81,0.34);
     .login-layout{
@@ -108,8 +110,6 @@ body {
 }
 .hot{
   position: relative;
-  overflow-y: auto;
-  max-height: 350px;
   .addroom-btn{
     position: fixed;
     bottom: 10px;
@@ -153,14 +153,15 @@ body {
   position: relative;
   word-break: break-all;
   white-space: pre-line;
+  width: 100%;
   vertical-align: top;
   min-width: 174px;
   border: 1px solid $navy-blue;
   border-radius: 5px;
   padding: 2rem 0.8rem 0.8rem 0.8rem;
   margin-bottom: 1rem;
-  &:nth-child(even){
-    margin-right: 1rem;
+  @include media-breakpoint-up(lg) {
+    width: 48%;
   }
   >a{
     position: absolute;
@@ -170,7 +171,7 @@ body {
     bottom: 0;
   }
   >p{
-    font-size: 0.75rem;
+    // font-size: 0.75rem;
     letter-spacing: 1.25px;
     line-height: 22px;
     display: -webkit-box;
@@ -223,8 +224,16 @@ body {
     border-radius: 10px 0 10px 10px;
   }
 }
+.top-padding{
+  padding-top: 112px;
+  padding-bottom: 70px;
+}
 .upmsg{
-  position: relative;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
   .msg{
     border-radius: 1rem;
     border: 1px solid $navy-blue;
