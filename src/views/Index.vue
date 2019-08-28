@@ -127,10 +127,6 @@ export default {
             num = 0;
             custom = '';
             //123
-            //456
-            //789
-            //123
-            //456
           } else {
             num = Object.keys(name[index].msg).length;
             custom = Object.values(name[index].msg)[num - 1].custom;
