@@ -11,6 +11,7 @@ import 'firebase/database';
 import 'firebase/storage';
 
 Vue.prototype.$cookie = cookie;
+
 const firebaseConfig = {
   apiKey: 'AIzaSyCkNQgPvrfDWAT25nBlGudbqwSirt6T_bA',
   authDomain: 'test-e30fc.firebaseapp.com',
@@ -23,7 +24,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 Vue.config.productionTip = false;
 Vue.prototype.$firebase = firebase;
-
 new Vue({
   router,
   store,
