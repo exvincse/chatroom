@@ -1,20 +1,18 @@
 <template>
   <div class="wrap">
-    <div class="">
-      <nav class="top-nav d-flex bg-white align-items-center justify-content-between">
-        <ul class="menu d-flex px-4 mb-0">
-          <li>
-            <router-link to="/index" class="py-3">首頁</router-link>
-          </li>
-        </ul>
-        <div class="login-layout">
-          <a href="#" class="p-3 btn btn-navy-blue login-out"
-            @click.prevent="loginout()">登出</a>
-          <a href="#" class="p-3 btn bg-navy-blue text-white name">{{cookie.name}}</a>
-        </div>
-      </nav>
-      <header class="top-bg py-5"></header>
-    </div>
+    <nav class="top-nav d-flex bg-white align-items-center justify-content-between">
+      <ul class="menu d-flex px-4 mb-0">
+        <li>
+          <router-link to="/index" class="py-3">首頁</router-link>
+        </li>
+      </ul>
+      <div class="login-layout">
+        <a href="#" class="p-3 btn btn-navy-blue login-out"
+          @click.prevent="loginout()">登出</a>
+        <a href="#" class="p-3 btn bg-navy-blue text-white name">{{cookie.name}}</a>
+      </div>
+    </nav>
+    <header class="top-bg py-5"></header>
     <section class="container h-100" style="margin-top:-70px;">
       <div class="row">
         <div class="col-12 mb-4">

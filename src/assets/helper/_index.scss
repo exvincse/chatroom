@@ -2,7 +2,7 @@
 // login
 .custom-name{
     width: 78%;
-    min-height: 343px;
+    max-height: 343px;
     transform: translateY(-14%);
     background-color:$white;
     border: 1px solid $navy-blue;
@@ -15,6 +15,7 @@
 .bottom-bg{
     background: #FFF8CF;
     border-radius: 5px;
+    height: 60vh;
 }
 
 //index

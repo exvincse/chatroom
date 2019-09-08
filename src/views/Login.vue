@@ -57,7 +57,7 @@ export default {
     position: relative;
     background: linear-gradient(45deg, rgba(255, 255, 255, 0.28) 9%, #ECC15B 0, #ECC15B 50%, rgba(255, 255, 255, 0.28) 0, rgba(255, 255, 255, 0.28) 57%, #ECC15B 0);
     background-size: 5px 5px;
-    height: 233px;
+    height: 40vh;
     &::after{
         position: absolute;
         content: '';
