@@ -114,10 +114,10 @@ export default {
     // 更新聊天室
     updateroom(room = 'room') {
       this.$firebase.database().ref(`/${room}/`).on('value', (snapshot) => {
+        const obj = [];
         if (snapshot.val() === null) return false;
         const id = Object.keys(snapshot.val());
         const name = Object.values(snapshot.val());
-        const obj = [];
         let num = 0;
         let custom = '';
         id.forEach((item, index) => {

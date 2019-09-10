@@ -169,8 +169,8 @@ export default {
       this.todaytopic = this.$route.query.room;
       this.room = this.$route.query.roomid;
       this.$firebase.database().ref(`/${this.$route.query.room}/${this.$route.query.roomid}/msg`).on('value', (snapshot) => {
-        if (snapshot.val() === null) return false;
         this.totalmsg = [];
+        if (snapshot.val() === null) return false;
         const key = Object.keys(snapshot.val());
         const val = Object.values(snapshot.val());
         key.forEach((item, index) => {
@@ -194,8 +194,9 @@ export default {
       return true;
     },
     delmsg(id) {
-      this.$firebase.database().ref(`/${this.$route.query.room}/${this.$route.query.roomid}/msg`).child(id).remove();
-      this.updatemsg(this.$route.query.roomid);
+      this.$firebase.database().ref(`/${this.$route.query.room}/${this.$route.query.roomid}/msg`).child(id).remove().then(() =>{
+        this.updatemsg(this.$route.query.roomid);
+      });
     },
     message(emoticon = '') {
       if (this.inputmsg === '' && this.file === '' && emoticon === '') return false;
