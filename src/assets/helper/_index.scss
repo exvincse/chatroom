@@ -22,6 +22,86 @@
 .wrap{
   position:relative;
 }
+.client{
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  .pic{
+    background-position: center;
+    background-size: cover;
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+  }
+  .name{
+    width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .item{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 60px;
+  }
+  .msg-w{
+    display: flex;
+    align-items: center;
+    span{
+      align-self: flex-end;
+    }
+  }
+  .msg{
+    max-width: 300px;
+    word-break:break-all;
+    word-wrap:break-word;
+    background: #ccc;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-right: 5px;
+    position: relative;
+    z-index: -10;
+    &::before{
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: -7px;
+      width: 0;
+      height: 0;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      border-right: 9px solid #ccc;
+    }
+  }
+}
+.local{
+  flex-direction: row-reverse;
+  .msg-w{
+    flex-direction: row-reverse;
+  }
+  .msg{
+    margin-left: 5px;
+    margin-right: 20px;
+    &::before{
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: auto;
+      right: -7px;
+      width: 0;
+      height: 0;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      border-right: none;
+      border-left: 9px solid #ccc;
+    }
+  }
+}
 .top-wrap{
   position: fixed;
   top: 0;
@@ -212,17 +292,6 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
-  }
-}
-.room-layout{
-  .msg{
-    word-break: break-all;
-    white-space: pre-line;
-    border: 1px solid $navy-blue;
-    border-radius: 0 10px 10px 10px;
-  }
-  .msg-r{
-    border-radius: 10px 0 10px 10px;
   }
 }
 .top-padding{

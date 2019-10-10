@@ -23,31 +23,43 @@
     <div class="d-flex h-100 flex-column px-3">
       <div v-for="(item, index) in totalmsg" :key="index">
         <template v-if="item.customkey !== cookie.namekey">
-          <div class="room-layout float-left mb-2">
-            <div>{{item.custom}}</div>
-              <div v-if="item.img">
+          <div class="client">
+            <div class="item">
+              <div class="pic" :style="{backgroundImage:'url('+item.randomimg+')'}"></div>
+              <div class="name" :title="item.custom">{{item.custom}}</div>
+            </div>
+            <div class="msg-w">
+              <div class="msg" v-if="item.msg">{{item.msg}}</div>
+              <div class="mx-3" v-if="item.img">
                 <img height="150" :src="item.img">
               </div>
-              <div v-if="item.emoticon">
+              <div class="mx-3" v-if="item.emoticon">
                 <img height="150" :src="item.emoticon">
               </div>
-            <div class="msg p-2" v-if="item.msg">{{item.msg}}</div>
-            <span>{{item.timestamp}}</span>
+              <span>{{item.timestamp}}</span>
+            </div>
           </div>
         </template>
 
         <template v-else>
-          <div class="room-layout float-right text-right mb-2">
-            <div>{{item.custom}}</div>
-            <div v-if="item.img">
-              <img height="150" :src="item.img">
+          <div class="client local">
+            <div class="item">
+              <div class="pic" :style="{backgroundImage:'url('+item.randomimg+')'}"></div>
+              <div class="name" :title="item.custom">{{item.custom}}</div>
             </div>
-            <div v-if="item.emoticon">
-              <img height="150" :src="item.emoticon">
+            <div class="msg-w">
+              <div class="msg" v-if="item.msg">{{item.msg}}</div>
+              <div class="mx-3" v-if="item.img">
+                <img width="100" height="100" :src="item.img">
+              </div>
+              <div class="mx-3" v-if="item.emoticon">
+                <img width="100" :src="item.emoticon">
+              </div>
+              <span>
+                <a href="#" class="d-block" @click.prevent="delmsg(item.id)">刪除</a>
+                {{item.timestamp}}
+              </span>
             </div>
-            <div class="msg msg-r p-2 text-left" v-if="item.msg">{{item.msg}}</div>
-            <span>{{item.timestamp}}</span>
-            <a href="#" class="d-block" @click.prevent="delmsg(item.id)">刪除</a>
           </div>
         </template>
       </div>
@@ -174,11 +186,24 @@ export default {
         const key = Object.keys(snapshot.val());
         const val = Object.values(snapshot.val());
         key.forEach((item, index) => {
+          const hour = new Date(val[index].timestamp * 100).getHours();
+          let min = new Date(val[index].timestamp * 100).getMinutes();
+          let str = '';
+          if (min <= 9) {
+            min = `0${min}`;
+          }
+          if (hour >= 12) {
+            str = `下午${hour}:${min}`;
+          } else {
+            str = `上午${hour}:${min}`;
+          }
+          const random = Math.floor(Math.random() * 500);
           this.totalmsg.push({
             id: item,
+            randomimg: `https://picsum.photos/id/${random}/200/300`,
             custom: val[index].custom,
             customkey: val[index].customkey,
-            timestamp: `${new Date(val[index].timestamp * 100).getHours()}:${new Date(val[index].timestamp * 100).getMinutes()}`,
+            timestamp: str,
             msg: val[index].msg,
             img: val[index].file,
             emoticon: val[index].emoticon,
@@ -194,7 +219,7 @@ export default {
       return true;
     },
     delmsg(id) {
-      this.$firebase.database().ref(`/${this.$route.query.room}/${this.$route.query.roomid}/msg`).child(id).remove().then(() =>{
+      this.$firebase.database().ref(`/${this.$route.query.room}/${this.$route.query.roomid}/msg`).child(id).remove().then(() => {
         this.updatemsg(this.$route.query.roomid);
       });
     },
