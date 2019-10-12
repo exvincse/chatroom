@@ -167,14 +167,14 @@ export default {
         this.$bus.$emit('loading', false);
         return false;
       }
-      if (len.length !== 0) {
+      if (!filupload && len.length !== 0) {
         const time = setTimeout(() => {
           this.imgerror = false;
           clearTimeout(time);
         }, 2000);
         this.imgerror = true;
         this.errormsg = '請確認上傳的格式是否為文件格式';
-        this.$refs.img.value = '';
+        this.$refs.file.value = '';
         this.$bus.$emit('loading', false);
         return false;
       }
@@ -207,7 +207,10 @@ export default {
       this.room = this.$route.query.roomid;
       this.$firebase.database().ref(`/${this.$route.query.room}/${this.$route.query.roomid}/msg`).on('value', (snapshot) => {
         this.totalmsg = [];
-        if (snapshot.val() === null) return false;
+        if (snapshot.val() === null) {
+          this.$bus.$emit('loading', false);
+          return false;
+        }
         const key = Object.keys(snapshot.val());
         const val = Object.values(snapshot.val());
         key.forEach((item, index) => {
@@ -257,11 +260,12 @@ export default {
         timestamp,
         msg: this.inputmsg,
         avatar: this.cookie.nowavatar,
-        name: this.file.name,
-        file: this.file.downloadURL,
-        type: this.file.type,
+        name: this.file.name || '',
+        file: this.file.downloadURL || '',
+        type: this.file.type || '',
         emoticon,
       });
+
       this.updatemsg(this.$route.query.roomid);
       this.inputmsg = '';
       this.file = '';
