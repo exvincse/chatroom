@@ -44,6 +44,8 @@ $green:   #28a745 !default;
 $teal:    #20c997 !default;
 $cyan:    #17a2b8 !default;
 $navy-blue: #102977 !default;
+$bk:#1D1D1D!default;
+$bg1:#D6D6D6 !default;
 $colors: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default
 $colors: map-merge(
@@ -62,6 +64,7 @@ $colors: map-merge(
     "gray":       $gray-600,
     "gray-dark":  $gray-800,
     "navy-blue":$navy-blue,
+    "bg1":$bg1,
   ),
   $colors
 );
@@ -75,6 +78,7 @@ $danger:        $red !default;
 $light:         $gray-100 !default;
 $dark:          $gray-800 !default;
 $navy-blue:     $navy-blue !default;
+$bg1:$bg1!default;
 $theme-colors: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default
 $theme-colors: map-merge(
@@ -87,7 +91,8 @@ $theme-colors: map-merge(
     "danger":     $danger,
     "light":      $light,
     "dark":       $dark,
-    "navy-blue":  $navy-blue
+    "navy-blue":  $navy-blue,
+    "bg1":$bg1
   ),
   $theme-colors
 );
@@ -271,7 +276,7 @@ $embed-responsive-aspect-ratios: join(
 // Font, line-height, and color for body text, headings, and more.
 
 // stylelint-disable value-keyword-case
-$font-family-sans-serif:      -apple-system, NotoSansCJKtc-DemiLight, Microsoft JhengHei, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+$font-family-sans-serif:      'Roboto Slab', serif,-apple-system, NotoSansCJKtc-DemiLight, Microsoft JhengHei, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 $font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
 $font-family-base:            $font-family-sans-serif !default;
 // stylelint-enable value-keyword-case

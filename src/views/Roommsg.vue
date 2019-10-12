@@ -1,60 +1,56 @@
 <template>
-  <div class="top-padding">
-    <div class="top-wrap">
-      <nav class="top-nav d-flex bg-white align-items-center justify-content-between">
-        <ul class="menu d-flex px-4 mb-0">
-          <li>
-            <router-link to="/index" class="py-3">首頁</router-link>
-          </li>
-        </ul>
-        <div class="login-layout">
-          <a href="#" class="p-3 btn btn-navy-blue login-out"
-            @click.prevent="loginout()">登出</a>
-          <a href="#" class="p-3 btn bg-navy-blue text-white name">{{cookie.name}}</a>
-        </div>
-      </nav>
-
-      <div class="top-banner p-3"
-        :class="{'top-hide':tophide}">
-        <span class="text-center">{{this.$route.query.roomname}}</span>
-        <a href="#" @click.prevent="tophide = !tophide"></a>
-      </div>
-    </div>
-    <div class="d-flex h-100 flex-column px-3">
+  <div>
+    <div class="d-flex flex-column px-3" style="padding-bottom: 44px;" v-if="totalmsg.length">
       <div v-for="(item, index) in totalmsg" :key="index">
         <template v-if="item.customkey !== cookie.namekey">
-          <div class="client">
+          <div class="room-client">
             <div class="item">
-              <div class="pic" :style="{backgroundImage:'url('+item.randomimg+')'}"></div>
+              <div class="pic" :style="{backgroundImage:'url('+require(`../assets/img/hu${item.avatar}.svg`)+')'}"></div>
               <div class="name" :title="item.custom">{{item.custom}}</div>
             </div>
             <div class="msg-w">
               <div class="msg" v-if="item.msg">{{item.msg}}</div>
               <div class="mx-3" v-if="item.img">
-                <img height="150" :src="item.img">
+                <img max-width="200" height="150"
+                  v-if="item.type"
+                  :src="item.img"
+                  >
+                <div class="msg-file" v-else>
+                  <i class="fas fa-file fa-4x"></i>
+                  <span>{{item.name}}</span>
+                  <a :href="item.img" target="_blank">下載</a>
+                </div>
               </div>
-              <div class="mx-3" v-if="item.emoticon">
-                <img height="150" :src="item.emoticon">
-              </div>
+              <!-- <div class="mx-3" v-if="item.emoticon">
+                <img max-width="200" height="150" :src="item.emoticon">
+              </div> -->
               <span>{{item.timestamp}}</span>
             </div>
           </div>
         </template>
 
         <template v-else>
-          <div class="client local">
+          <div class="room-client local">
             <div class="item">
-              <div class="pic" :style="{backgroundImage:'url('+item.randomimg+')'}"></div>
+              <div class="pic" :style="{backgroundImage:'url('+require(`../assets/img/hu${item.avatar}.svg`)+')'}"></div>
               <div class="name" :title="item.custom">{{item.custom}}</div>
             </div>
             <div class="msg-w">
               <div class="msg" v-if="item.msg">{{item.msg}}</div>
               <div class="mx-3" v-if="item.img">
-                <img width="100" height="100" :src="item.img">
+                <img max-width="200" height="150"
+                  v-if="item.type"
+                  :src="item.img"
+                  >
+                <div class="msg-file" v-else>
+                  <i class="fas fa-file fa-4x"></i>
+                  <span>{{item.name}}</span>
+                  <a :href="item.img" target="_blank">下載</a>
+                </div>
               </div>
-              <div class="mx-3" v-if="item.emoticon">
-                <img width="100" :src="item.emoticon">
-              </div>
+              <!-- <div class="mx-3" v-if="item.emoticon">
+                <img width="150" height="150" :src="item.emoticon">
+              </div> -->
               <span>
                 <a href="#" class="d-block" @click.prevent="delmsg(item.id)">刪除</a>
                 {{item.timestamp}}
@@ -64,49 +60,39 @@
         </template>
       </div>
       <div v-if="progress" class="d-flex flex-column ml-auto">
-        <h5>檔案傳送中</h5>
+        <h5 class="text-white">檔案傳送中</h5>
         <div class="progess"
           :style="{ width: progress + 'px' }"></div>
         <span class="text-center">{{progress}}</span>
       </div>
-      <div v-if="imgerror">
-        <p>請確認上傳的格式是否為jpeg,jpg,gif,bmp,png,swf</p>
-      </div>
+      <p v-if="imgerror" class="text-right text-white">
+        {{errormsg}}
+      </p>
     </div>
-    <div class="upmsg d-flex align-items-center p-3">
-      <div class="mr-2">
-        <input type="file" id="file" ref="file" style="width:0px;height:0px;position:absolute;opacity:0;" @change="upload()">
-        <label for="file" class="file mb-0">
-          <img src="../assets/img/picture.svg" width="25px" height="25px" alt="">
-        </label>
-      </div>
 
-      <div class="emoticon-wrap" v-if="emoticonshow">
-        <div class="d-flex emoticon">
-          <a href="#" @click.prevent="emoticon='https://firebasestorage.googleapis.com/v0/b/test-e30fc.appspot.com/o/emoticon%2Femoticon_all.png?alt=media&token=2a6c63ba-e636-4d93-97c3-d17d66f73023'
-              ,message(emoticon)">
-            <img class="mr-2" src="https://firebasestorage.googleapis.com/v0/b/test-e30fc.appspot.com/o/emoticon%2Femoticon_all.png?alt=media&token=2a6c63ba-e636-4d93-97c3-d17d66f73023" width="70px" height="70px" alt="" srcset="">
+    <div class="chat-pos">
+      <div class="chat-msg">
+        <input type="text" placeholder="輸入聊天訊息" v-model.trim="inputmsg"
+          @keyup.enter="message()">
+
+        <div class="chat-group">
+          <a href="#">
+            <img src="../assets/img/Group 428.svg" width="20px" height="30px" alt="">
           </a>
-          <a href="#" @click.prevent="emoticon='https://firebasestorage.googleapis.com/v0/b/test-e30fc.appspot.com/o/emoticon%2Femoticon_bird.png?alt=media&token=5f8c98d4-ab99-4576-a972-d19211166f58'
-              ,message(emoticon)">
-            <img class="mr-2" src="https://firebasestorage.googleapis.com/v0/b/test-e30fc.appspot.com/o/emoticon%2Femoticon_bird.png?alt=media&token=5f8c98d4-ab99-4576-a972-d19211166f58" width="70px" height="70px" alt="" srcset="">
+          <a href="#" style="position:relative;">
+            <input type="file" id="file" ref="file" style="width:0px;height:0px;position:absolute;opacity:0;" @change="upload(false)">
+            <label for="file" class="file mb-0">
+              <img src="../assets/img/Group 429.svg" width="20px" height="30px" alt="">
+            </label>
           </a>
-          <a href="#" @click.prevent="emoticon='https://firebasestorage.googleapis.com/v0/b/test-e30fc.appspot.com/o/emoticon%2Femoticon_smell.png?alt=media&token=acb74989-d21c-4100-aed1-8a48cb5da624'
-              ,message(emoticon)">
-            <img class="mr-2" src="https://firebasestorage.googleapis.com/v0/b/test-e30fc.appspot.com/o/emoticon%2Femoticon_smell.png?alt=media&token=acb74989-d21c-4100-aed1-8a48cb5da624" width="70px" height="70px" alt="" srcset="">
+          <a href="#" style="position:relative;">
+            <input type="file" id="img" ref="img" style="width:0px;height:0px;position:absolute;opacity:0;" @change="upload()">
+            <label for="img" class="file mb-0">
+              <img src="../assets/img/Group 430.svg" width="20px" height="30px" alt="">
+            </label>
           </a>
         </div>
       </div>
-
-      <a href="#" @click.prevent="emoticonshow=!emoticonshow">
-        <img class="mr-2" src="../assets/img/smile.svg" width="25px" height="25px" alt="" srcset="">
-      </a>
-
-      <input type="text" class="form-control mr-2 msg" v-model.trim="inputmsg"
-        @keyup.enter="message()">
-      <a href="#" @click.prevent="message()">
-        <img src="../assets/img/right-arrow.svg" width="25px" height="25px" alt="" srcset="">
-      </a>
     </div>
   </div>
 </template>
@@ -126,6 +112,7 @@ export default {
       imgerror: false,
       file: '',
       inputmsg: '',
+      errormsg: '',
     };
   },
   created() {
@@ -139,27 +126,58 @@ export default {
     this.inputmsg = '';
     this.file = '';
     this.updatemsg();
+    this.$nextTick(() => {
+      const h = $('html').prop('scrollHeight');
+      $('html').scrollTop(h);
+    });
     return true;
   },
+  watch: {
+    '$route'() {
+      this.updatemsg();
+    },
+  },
   updated() {
-    const h = $('html').height();
+    const h = $('html').prop('scrollHeight');
     $('html').scrollTop(h);
   },
   methods: {
-    upload() {
+    upload(filupload = true) {
+      this.$bus.$emit('loading', true);
       const imgtype = ['image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/png', 'image/swf'];
       const storageRef = this.$firebase.storage().ref();
-      const file = this.$refs.file.files[0];
+      let file = null;
+      if (filupload) {
+        file = this.$refs.img.files[0];
+      } else {
+        file = this.$refs.file.files[0];
+      }
       if (file === undefined) return false;
       const len = imgtype.filter((item) => {
         return item.includes(file.type);
       });
-      if (len.length === 0) {
+      if (filupload && len.length === 0) {
+        const time = setTimeout(() => {
+          this.imgerror = false;
+          clearTimeout(time);
+        }, 2000);
         this.imgerror = true;
+        this.errormsg = '請確認上傳的格式是否為jpeg,jpg,gif,bmp,png,swf';
+        this.$refs.img.value = '';
+        this.$bus.$emit('loading', false);
         return false;
       }
-      this.imgerror = false;
-
+      if (len.length !== 0) {
+        const time = setTimeout(() => {
+          this.imgerror = false;
+          clearTimeout(time);
+        }, 2000);
+        this.imgerror = true;
+        this.errormsg = '請確認上傳的格式是否為文件格式';
+        this.$refs.img.value = '';
+        this.$bus.$emit('loading', false);
+        return false;
+      }
       const uploadTask = storageRef.child(`images/${file.name}`).put(file);
       uploadTask.on('state_changed', (snapshot) => {
         this.progress = Math.ceil((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
@@ -167,17 +185,24 @@ export default {
 
       }, () => {
         uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-          this.file = downloadURL;
+          this.file = {
+            downloadURL,
+            name: file.name,
+            type: file.type,
+          };
         }).then(() => {
           this.message();
+          this.$bus.$emit('loading', false);
+          this.$refs.file.value = '';
+          this.$refs.img.value = '';
           this.inputmsg = '';
           this.file = '';
           this.progress = 0;
         });
       });
-      return true;
     },
     updatemsg() {
+      this.$bus.$emit('loading', true);
       this.todaytopic = this.$route.query.room;
       this.room = this.$route.query.roomid;
       this.$firebase.database().ref(`/${this.$route.query.room}/${this.$route.query.roomid}/msg`).on('value', (snapshot) => {
@@ -197,31 +222,31 @@ export default {
           } else {
             str = `上午${hour}:${min}`;
           }
-          const random = Math.floor(Math.random() * 500);
+          const imgtype = ['image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/png', 'image/swf'];
+          const len = imgtype.some((item) => {
+            return item.includes(val[index].type);
+          });
           this.totalmsg.push({
             id: item,
-            randomimg: `https://picsum.photos/id/${random}/200/300`,
             custom: val[index].custom,
             customkey: val[index].customkey,
             timestamp: str,
+            avatar: val[index].avatar,
+            type: len,
+            name: val[index].name,
             msg: val[index].msg,
             img: val[index].file,
             emoticon: val[index].emoticon,
           });
+          this.$bus.$emit('loading', false);
         });
       });
       this.inputmsg = '';
       this.file = '';
-      this.$nextTick(() => {
-        const h = $('html').height();
-        $('html').scrollTop(h);
-      });
-      return true;
     },
     delmsg(id) {
-      this.$firebase.database().ref(`/${this.$route.query.room}/${this.$route.query.roomid}/msg`).child(id).remove().then(() => {
-        this.updatemsg(this.$route.query.roomid);
-      });
+      this.$firebase.database().ref(`/${this.$route.query.room}/${this.$route.query.roomid}/msg`).child(id).remove();
+      this.updatemsg(this.$route.query.roomid);
     },
     message(emoticon = '') {
       if (this.inputmsg === '' && this.file === '' && emoticon === '') return false;
@@ -231,8 +256,11 @@ export default {
         customkey: this.cookie.namekey,
         timestamp,
         msg: this.inputmsg,
+        avatar: this.cookie.nowavatar,
+        name: this.file.name,
+        file: this.file.downloadURL,
+        type: this.file.type,
         emoticon,
-        file: this.file,
       });
       this.updatemsg(this.$route.query.roomid);
       this.inputmsg = '';
@@ -246,3 +274,37 @@ export default {
   },
 };
 </script>
+<style lang="scss" scope="this api replaced by slot-scope in 2.5.0+">
+  .chat-pos{
+    position: fixed;
+    width: 100%;
+    padding-right: 399px;
+    bottom: 0;
+    @media (max-width: 768px) {
+      padding: 0;
+    }
+  }
+  .file{
+    cursor: pointer;
+  }
+  .chat-msg{
+    position: relative;
+    input[type='text']{
+      width: 100%;
+      background: #403F3F;
+      padding: 10px 100px 10px 20px;
+      border:none;
+      outline: none;
+      color: #fff;
+    }
+    .chat-group{
+      width: 100px;
+      top: 0;
+      right: 0;
+      position: absolute;
+      display: flex;
+      justify-content:space-between;
+      padding: 7px 10px;
+    }
+  }
+</style>

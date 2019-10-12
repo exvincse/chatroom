@@ -19,6 +19,7 @@ module.exports = {
     "no-tabs": "off",
     "no-alert": "off",
     "no-plusplus": ['error', { "allowForLoopAfterthoughts": true }],
+    "no-shadow": ["error", { "allow": ["state"] }],
     "space-unary-ops": [
       2, {
         "words": true,

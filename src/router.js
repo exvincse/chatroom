@@ -12,10 +12,12 @@ export default new Router({
     {
       path: '/index',
       component: () => import('./views/Index'),
-    },
-    {
-      path: '/roommsg',
-      component: () => import('./views/Roommsg'),
-    },
+      children:[
+        {
+          path: 'roommsg',
+          component: () => import('./views/Roommsg'),
+        },
+      ]
+    }
   ],
 });

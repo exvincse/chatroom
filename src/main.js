@@ -3,13 +3,14 @@ import firebase from 'firebase/app';
 import cookie from 'js-cookie/src/js.cookie';
 import App from './App.vue';
 import router from './router';
-import store from './store';
 import 'bootstrap';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
 
+const bus = new Vue();
+Vue.prototype.$bus = bus;
 Vue.prototype.$cookie = cookie;
 
 const firebaseConfig = {
@@ -26,6 +27,5 @@ Vue.config.productionTip = false;
 Vue.prototype.$firebase = firebase;
 new Vue({
   router,
-  store,
   render: h => h(App),
 }).$mount('#app');
