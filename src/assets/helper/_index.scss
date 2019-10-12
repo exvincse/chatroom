@@ -1,98 +1,139 @@
-
-
-//index
-.room-client{
-  color:#fff;
+.nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color:$b-color4;
+  position: fixed;
+  width: 100%;
+  z-index: 60;
+  padding: 16px 25px;
+  button{
+    display: none;
+    @media (max-width:768px) {
+      display: block;
+    }
+  }
+}
+.content{
+  display: flex;
+  min-height: 100vh;
+  padding-top: 58px;
+}
+.left-block{
+  width: 399px;
+  background-color: $b-color3;
+  position: fixed;
+  height: 100%;
+  z-index: 120;
+  padding-top: 40px;
+  @media (max-width:768px) {
+    top: 0;
+    max-width: 280px;
+    transform: translateX(-399px);
+    transition: 0.5s;
+    z-index: 120;
+  }
+}
+.show{
+  transform: translateX(0);
+}
+.right-block{
+  width: 100%;
+  padding-left: 399px;
+  overflow: hidden;
+  background-color: $b-color1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  .slidebg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 20;
+  }
+  @media (max-width:768px) {
+    width: 100%;
+    padding: 0;
+  }
+}
+.client{
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid $b-color2;
+}
+.client-msg{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .connect{
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    background: #98D693;
+  }
+  span{
+    color: $white;
+  }
+}
+.logout{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+  h2{
+    margin: 0;
+    color: $w-color2;
+  }
+  a{
+    height: 30px;
+  }
+  img{
+    vertical-align: middle;
+  }
+}
+.choose-room{
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
-  .pic{
-    background-position: center;
-    background-size: cover;
-    width: 60px;
-    height: 60px;
-    border-radius: 60px;
-  }
-  .name{
-    width: 60px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: center;
-  }
-  .item{
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    width: 60px;
-  }
-  .msg-w{
+  flex-direction: column;
+  color: $white;
+  .choose-room-msg,.room-title{
+    width: 100%;
     display: flex;
     align-items: center;
-    span{
-      align-self: flex-end;
-    }
+    justify-content: space-between;
   }
-  .msg{
-    max-width: 300px;
-    word-wrap: break-word;
-    word-break:break-all;
-    color: #000;
-    background: #fff;
-    padding: 10px;
-    border-radius: 10px;
-    margin-left: 20px;
-    margin-right: 5px;
-    position: relative;
-    @media (max-width:768px) {
-      max-width: 170px;
+  .room-title{
+    h2{
+      color: $w-color2;
     }
-    @media (max-width:320px) {
-      max-width: 100px;
-    }
-    &::before{
-      content: '';
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: -7px;
-      width: 0;
-      height: 0;
-      border-top: 7px solid transparent;
-      border-bottom: 7px solid transparent;
-      border-right: 9px solid #fff;
+    @media (max-width: 768px) {
+      flex-direction: column;
     }
   }
 }
-.local{
-  flex-direction: row-reverse;
-  .msg-w{
-    flex-direction: row-reverse;
+.choose-room-h{
+  width: 100%;
+  max-height: 275px;
+  overflow-y: auto;
+  @media (max-width:320px) {
+    max-height: 200px;
   }
-  .msg{
-    margin-left: 5px;
-    margin-right: 20px;
-    &::before{
-      content: '';
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: auto;
-      right: -7px;
-      width: 0;
-      height: 0;
-      border-top: 7px solid transparent;
-      border-bottom: 7px solid transparent;
-      border-right: none;
-      border-left: 9px solid #fff;
+  .choose-room-msg{
+    cursor: pointer;
+    &:hover{
+      box-shadow: 0px 0px 20px $black;
     }
   }
 }
-
-
 .addroom{
   position: fixed;
-  background: #fff;
+  background-color: $white;
   border-radius: 5px;
   top: 50%;
   left: 50%;
@@ -113,46 +154,4 @@
   bottom: 0;
   z-index: 300;
   background-color: rgba(0,0,0,0.44);
-}
-
-// roommsg
-.progess{
-  width: 0px;
-  height: 7px;
-  border-radius: 10px;
-  background-color: $success;
-}
-.file{
-  cursor: pointer;
-}
-.emoticon-wrap{
-  position: relative;
-  .emoticon{
-    position: absolute;
-    background-color: $white;
-    border:1px solid $navy-blue;
-    border-radius: 10px;
-    bottom: 21px;
-    left: -45px;
-    &::after{
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 46px;
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-top: 10px solid $navy-blue;
-      border-right: 10px solid transparent;
-    }
-  }
-}
-.msg-file{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 200px;
-  border: 1px solid #fff;
-  padding: 10px 20px;
-  border-radius: 10px;
 }

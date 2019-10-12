@@ -1,0 +1,64 @@
+.login-bg{
+    background-position: center;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .login{
+    .pic{
+      text-align: center;
+    }
+    .item{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: $b-color1;
+      border: 1px solid $white;
+      small{
+        color:#66EAD5;
+      }
+      h2{
+        color: $white;
+      }
+      span{
+        align-self: flex-start;
+        color: $white;
+      }
+      input[type="button"]{
+        width: 100%;
+      }
+      .avatar{
+        position: relative;
+        border-radius: 50px 0 0 50px;
+        >a{
+          display: block;
+          padding: 10px;
+        }
+        ul{
+          border-radius: 0 50px 50px 0;
+          background-color: $w-color1;
+          margin: 0;
+          position: absolute;
+          top: 0;
+          left: 74px;
+          list-style: none;
+          display: flex;
+          li{
+            padding: 10px;
+          }
+        }
+      }
+      .avatar-menu{
+        width: 0;
+        padding: 0;
+        transition: width .3s;
+        overflow: hidden;
+      }
+      .menu-show{
+        width: 350px;
+      }
+    }
+  }

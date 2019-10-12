@@ -278,37 +278,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scope="this api replaced by slot-scope in 2.5.0+">
-  .chat-pos{
-    position: fixed;
-    width: 100%;
-    padding-right: 399px;
-    bottom: 0;
-    @media (max-width: 768px) {
-      padding: 0;
-    }
-  }
-  .file{
-    cursor: pointer;
-  }
-  .chat-msg{
-    position: relative;
-    input[type='text']{
-      width: 100%;
-      background: #403F3F;
-      padding: 10px 100px 10px 20px;
-      border:none;
-      outline: none;
-      color: #fff;
-    }
-    .chat-group{
-      width: 100px;
-      top: 0;
-      right: 0;
-      position: absolute;
-      display: flex;
-      justify-content:space-between;
-      padding: 7px 10px;
-    }
-  }
-</style>
+
