@@ -73,7 +73,7 @@
     <div class="chat-pos">
       <div class="chat-msg">
         <input type="text" placeholder="輸入聊天訊息" v-model.trim="inputmsg"
-          @keyup.enter="message()">
+          @keyup.enter="sendmsg()">
 
         <div class="chat-group">
           <a href="#">
@@ -116,32 +116,36 @@ export default {
     };
   },
   created() {
+    // 驗證是否設定cookie
     if (this.$cookie.get('name') === undefined || this.$cookie.get('name') === 'clear') {
       this.$router.push('/');
       return false;
     }
     this.cookie = JSON.parse(this.$cookie.get('name'));
 
-    if (this.$route.query.room === '' || this.$route.query.roomid === '') this.$router.push('/index');
+    if (this.$route.query.roomid === '') this.$router.push('/index');
     this.inputmsg = '';
     this.file = '';
     this.updatemsg();
     this.$nextTick(() => {
-      const h = $('html').prop('scrollHeight');
-      $('html').scrollTop(h);
+      const h = $('html,body').prop('scrollHeight');
+      $('html,body').scrollTop(h);
     });
     return true;
   },
   watch: {
+    // 監聽路由更新聊天室
     '$route'() {
       this.updatemsg();
     },
   },
   updated() {
-    const h = $('html').prop('scrollHeight');
-    $('html').scrollTop(h);
+    // 更新時自動滑到最底層訊息
+    const h = $('html,body').prop('scrollHeight');
+    $('html,body').scrollTop(h);
   },
   methods: {
+    // 上傳圖片或檔案
     upload(filupload = true) {
       this.$bus.$emit('loading', true);
       const imgtype = ['image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/png', 'image/swf'];
@@ -191,7 +195,7 @@ export default {
             type: file.type,
           };
         }).then(() => {
-          this.message();
+          this.sendmsg();
           this.$bus.$emit('loading', false);
           this.$refs.file.value = '';
           this.$refs.img.value = '';
@@ -201,11 +205,11 @@ export default {
         });
       });
     },
+    // 更新聊天室對話
     updatemsg() {
       this.$bus.$emit('loading', true);
-      this.todaytopic = this.$route.query.room;
       this.room = this.$route.query.roomid;
-      this.$firebase.database().ref(`/${this.$route.query.room}/${this.$route.query.roomid}/msg`).on('value', (snapshot) => {
+      this.$firebase.database().ref(`/${this.$route.query.roomid}/msg`).on('value', (snapshot) => {
         this.totalmsg = [];
         if (snapshot.val() === null) {
           this.$bus.$emit('loading', false);
@@ -247,14 +251,16 @@ export default {
       this.inputmsg = '';
       this.file = '';
     },
+    // 刪除自己發送對話
     delmsg(id) {
-      this.$firebase.database().ref(`/${this.$route.query.room}/${this.$route.query.roomid}/msg`).child(id).remove();
+      this.$firebase.database().ref(`/${this.$route.query.roomid}/msg`).child(id).remove();
       this.updatemsg(this.$route.query.roomid);
     },
-    message(emoticon = '') {
+    // 發送對話
+    sendmsg(emoticon = '') {
       if (this.inputmsg === '' && this.file === '' && emoticon === '') return false;
       const timestamp = Math.floor(Date.now() / 100);
-      this.$firebase.database().ref(`/${this.$route.query.room}/${this.$route.query.roomid}/msg`).push({
+      this.$firebase.database().ref(`/${this.$route.query.roomid}/msg`).push({
         custom: this.cookie.name,
         customkey: this.cookie.namekey,
         timestamp,
@@ -271,6 +277,7 @@ export default {
       this.file = '';
       return true;
     },
+    // 登出
     loginout() {
       this.$cookie.set('name', 'clear');
       this.$router.push('/');
@@ -278,4 +285,3 @@ export default {
   },
 };
 </script>
-

@@ -36,7 +36,7 @@
             <template v-for="item in uesrstory">
               <div class="choose-room-msg p-3" :key="item.id"
                 :title="item.name"
-                @click.prevent="updatemsg(item.id, item.name),show=false">
+                @click.prevent="joinroom(item.id, item.name),show=false">
                 <h4>{{item.name}}</h4>
                 <span>對話數:{{item.num}}</span>
               </div>
@@ -80,6 +80,7 @@ export default {
     };
   },
   created() {
+    // 驗證是否設定cookie
     if (this.$cookie.get('name') === undefined || this.$cookie.get('name') === 'clear') {
       this.$router.push('/');
     } else {
@@ -87,7 +88,7 @@ export default {
     }
   },
   mounted() {
-    this.updateroom('room');
+    this.updateroom();
   },
   methods: {
     // 新增聊天室
@@ -97,7 +98,7 @@ export default {
         return false;
       }
       const timestamp = Math.floor(Date.now() / 100);
-      this.$firebase.database().ref('/room').push({
+      this.$firebase.database().ref('/').push({
         creatcustom: this.cookie,
         name: this.Addroom,
         timestamp,
@@ -107,9 +108,9 @@ export default {
       return true;
     },
     // 更新聊天室
-    updateroom(room) {
+    updateroom() {
       this.$bus.$emit('loading', true);
-      this.$firebase.database().ref(`/${room}`).on('value', (snapshot) => {
+      this.$firebase.database().ref('/').on('value', (snapshot) => {
         const obj = [];
         if (snapshot.val() === null) return false;
         const id = Object.keys(snapshot.val());
@@ -134,26 +135,22 @@ export default {
         });
 
         obj.sort((a, b) => b.num - a.num);
-
-        if (room === 'room') {
-          this.uesrstory = obj;
-        } else {
-          this.todaytopic = obj[0];
-        }
+        this.uesrstory = obj;
         this.$bus.$emit('loading', false);
         return true;
       });
     },
-    updatemsg(roomid, roomname, room = 'room') {
+    // 進入聊天室
+    joinroom(roomid, roomname) {
       this.$router.push({
         path: '/index/roommsg',
         query: {
-          room,
           roomid,
           roomname,
         },
       });
     },
+    // 登出
     loginout() {
       this.$cookie.set('name', 'clear');
       this.$router.push('/');

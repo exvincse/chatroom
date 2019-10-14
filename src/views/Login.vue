@@ -40,16 +40,18 @@ export default {
     return {
       name: '',
       namekey: '',
-      avatar:false,
-      nowavatar:1,
+      avatar: false,
+      nowavatar: 1,
     };
   },
   created() {
+    // 驗證是否設定cookie
     if (this.$cookie.get('name') !== undefined && this.$cookie.get('name') !== 'clear') {
       this.$router.push('/index');
     }
   },
   methods: {
+    // 使用匿名並設定cookie
     start() {
       if (this.name === '') return false;
       const name = this.name;
@@ -57,7 +59,7 @@ export default {
       const obj = {
         name,
         namekey,
-        nowavatar:this.nowavatar,
+        nowavatar: this.nowavatar,
       };
       this.$cookie.set('name', obj);
       this.$router.push('/index');
